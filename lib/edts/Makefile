@@ -1,33 +1,34 @@
-suite=$(if $(SUITE), suite=$(SUITE), )
+suite  = $(if $(SUITE), suite=$(SUITE), )
+REBAR ?= $(shell which rebar 2> /dev/null || which ./rebar)
 
 .PHONY:	all deps check test clean
 
 all: deps
-	./rebar compile
+	$(REBAR) compile
 
 deps:
-	./rebar get-deps
+	$(REBAR) get-deps
 
 docs:
-	./rebar doc
+	$(REBAR) doc
 
 check:
-	./rebar check-plt
-	./rebar dialyze
+	$(REBAR) check-plt
+	$(REBAR) dialyze
 
 test: eunit ct
 
 eunit:
-	./rebar eunit $(suite) skip_deps=true
+	$(REBAR) eunit $(suite) skip_deps=true
 
 ct:
-	./rebar ct $(suite) skip_deps=true
+	$(REBAR) ct $(suite) skip_deps=true
 
 conf_clean:
 	@:
 
 clean:
-	./rebar clean
+	$(REBAR) clean
 	$(RM) doc/*
 
 # eof
